@@ -9,6 +9,6 @@ class ApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Assertions.assertThat(3).isEqualTo(3);
+		Assertions.assertThat(5).isEqualTo(5);
 	}
 }
