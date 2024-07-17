@@ -1,0 +1,67 @@
+name: Java CD with Gradle
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+    paths: 'backend/**'
+    
+defaults:
+  run:
+    working-directory: backend/banggood
+    
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v3
+      with:
+        gradle-version: 8.8
+
+    - name: Gradle Caching
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew build
+      
+    - name: Push to EC2
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.EC2_SERVER_HOST }}
+        username: ec2-user
+        key: ${{ secrets.PRIVATE_KEY }}
+        source: "build/libs/*SNAPSHOT.jar"
+        target: "source"
+        rm: true
+        
+    - name: SSH to EC2 and run deployment script
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_SERVER_HOST }}
+        username: ec2-user
+        key: ${{ secrets.PRIVATE_KEY }}
+        script: |
+          cd source
+          nohup java -jar bang-ggood-0.0.1-SNAPSHOT.jar &
