@@ -53,7 +53,7 @@ jobs:
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
         source: "build/libs/*.jar"
-        target: "/source"
+        target: "."
         rm: true
         
     - name: SSH to EC2 and run deployment script
