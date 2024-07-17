@@ -5,9 +5,9 @@ on:
     branches: [ "main", "develop" ]
     paths: 'backend/**'
     
-defaults:
-  run:
-    working-directory: backend/banggood
+# defaults:
+#   run:
+#     working-directory: backend/banggood
     
 jobs:
   deploy:
@@ -40,14 +40,14 @@ jobs:
     #     restore-keys: |
     #       ${{ runner.os }}-gradle-
 
-    # - name: Grant execute permission for gradlew
-    #   run: chmod +x gradlew
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
 
     - name: Build with Gradle
-      run: ./gradlew clean build
+      run: /backend/banggood/gradlew clean build
 
     - name: 빌드된 파일 이름 변경하기
-      run: mv ./build/libs/*SNAPSHOT.jar ./project.jar
+      run: mv /backend/banggood/build/libs/*SNAPSHOT.jar backend/banggood/project.jar
       
     - name: Push to EC2
       uses: appleboy/scp-action@master
@@ -55,8 +55,8 @@ jobs:
         host: ${{ secrets.EC2_SERVER_HOST }}
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
-        source: "build/libs/*.jar"
-        target: "."
+        source: project.jar
+        target: /home/ubuntu
         rm: true
         
     - name: SSH to EC2 and run deployment script
@@ -66,5 +66,5 @@ jobs:
         username: ec2-user
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
-          cd source
-          nohup java -jar bang-ggood-0.0.1-SNAPSHOT.jar &
+          cd /home/ubuntu
+          nohup java -jar project.jar &
