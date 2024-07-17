@@ -44,7 +44,7 @@ jobs:
       run: chmod +x backend/banggood/gradlew
 
     - name: Build with Gradle
-      run: /backend/banggood/gradlew clean build
+      run: backend/banggood/gradlew clean build
 
     - name: 빌드된 파일 이름 변경하기
       run: mv /backend/banggood/build/libs/*SNAPSHOT.jar backend/banggood/project.jar
