@@ -10,7 +10,7 @@ on:
 #     working-directory: backend/banggood
     
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,16 +30,6 @@ jobs:
       with:
         gradle-version: 8.8
 
-    # - name: Gradle Caching
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: |
-    #       ~/.gradle/caches
-    #       ~/.gradle/wrapper
-    #     key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-gradle-
-
     - name: Grant execute permission for gradlew
       run: chmod +x backend/banggood/gradlew
 
@@ -47,25 +37,49 @@ jobs:
       run: ./gradlew clean build
       working-directory: backend/banggood
 
-    - name: 빌드된 파일 이름 변경하기
-      run: mv backend/banggood/build/libs/*SNAPSHOT.jar backend/banggood/project.jar
-      
-    - name: Push to EC2
-      uses: appleboy/scp-action@v0.1.3
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v3
       with:
-        host: ${{ secrets.EC2_SERVER_HOST }}
-        username: ubuntu
-        key: ${{ secrets.PRIVATE_KEY }}
-        source: backend/banggood/project.jar
-        target: /home/ubuntu
-        rm: true
-        
-    - name: SSH to EC2 and run deployment script
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_SERVER_HOST }}
-        username: ubuntu
-        key: ${{ secrets.PRIVATE_KEY }}
-        script: |
-          cd /home/ubuntu
-          nohup java -jar project.jar &
+        working-directory: backend/banggood
+        name: bang-ggood-be-develop-jar
+        path: ./**/bang-ggood-0.0.1-SNAPSHOT.jar
+
+  deploy:
+    needs: build
+    runs-on: bang-ggood
+    steps:
+      - name: change permission
+        run: |
+          sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/bang-ggood
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: bang-ggood-be-develop-jar
+
+      - name: Check if room-esc server is running on port 8080
+        id: check-server-on-port
+        run: |
+          echo "Checking if port 8080 is in use..."
+          PID=$(lsof -t -i:8080 || true)
+          if [ -n "$PID" ]; then
+            echo "server_running=true" >> $GITHUB_ENV
+            echo "PID=$PID" >> $GITHUB_ENV
+          else
+            echo "server_running=false" >> $GITHUB_ENV
+          fi
+
+      - name: Stop server if running
+        if: env.server_running == 'true'
+        run: |
+          echo "Stopping server running on port 8080..."
+          kill -9 $PID
+          echo "Preivous running Server stopped."
+
+      - name: Start server
+        run:
+          sudo nohup java -jar bang-ggood-0.0.1-SNAPSHOT.jar &
+          echo "Lastest Backend API Server started."
+    
+    
+    
