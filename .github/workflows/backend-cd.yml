@@ -4,7 +4,8 @@ on:
   pull_request:
     branches: [ "main", "develop" ]
     # paths: 'backend/**'
-    
+  push:
+    branches: [ "main", "develop" ]   
 # defaults:
 #   run:
 #     working-directory: backend/banggood
@@ -50,7 +51,7 @@ jobs:
     steps:
       - name: change permission
         run: |
-          sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/bang-ggood
+          sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/2024-bang-ggood
 
       - name: Download build artifact
         uses: actions/download-artifact@v3
