@@ -78,7 +78,7 @@ jobs:
           echo "Preivous running Server stopped."
 
       - name: Start server
-        run:
+        run: |
           pwd
           ls
           sudo nohup java -jar ./backend/banggood/build/libs/demo-0.0.1-SNAPSHOT.jar &
