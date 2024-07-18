@@ -1,7 +1,7 @@
 name: Java CD with Gradle
 
 on:
-  push:
+  pull_request:
     branches: [ "main", "develop" ]
     paths: 'backend/**'
     
@@ -37,6 +37,8 @@ jobs:
       run: ./gradlew clean build
       working-directory: backend/banggood
 
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v3
       with:
         working-directory: backend/banggood
         name: bang-ggood-be-develop-jar
