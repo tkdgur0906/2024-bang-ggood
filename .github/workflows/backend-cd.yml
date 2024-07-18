@@ -59,6 +59,7 @@ jobs:
         source: backend/banggood/project.jar
         target: /home/ubuntu
         rm: true
+        port: 80
         
     - name: SSH to EC2 and run deployment script
       uses: appleboy/ssh-action@master
