@@ -43,7 +43,7 @@ jobs:
       with:
         working-directory: backend/banggood
         name: bang-ggood-be-develop-jar
-        path: ./**/bang-ggood-0.0.1-SNAPSHOT.jar
+        path: ./**/*.jar
 
   deploy:
     needs: build
