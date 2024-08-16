@@ -36,11 +36,6 @@ jobs:
                     "name": "Reviewers",
                     "value": "${{ join(github.event.pull_request.requested_reviewers.*.login, ', ') }}",
                     "inline": false
-                  },
-                  {
-                    "name": "Assignees",
-                    "value": "${{ join(github.event.pull_request.assignees.*.login, ', ') }}",
-                    "inline": false
                   }
                 ]
               }
