@@ -25,14 +25,15 @@ jobs:
                     {
                       "name": "Pull Request Number",
                       "value": "#${{ github.event.pull_request.number }}",
-                      "inline" : true
+                      "inline": true
                     },
                     {
                       "name": "Author",
-                      "value": "${{ github.event.pull_request.user.login }}"
+                      "value": "${{ github.event.pull_request.user.login }}",
+                      "inline": true
                     },
                     {
-                      "name": "body",
+                      "name": "Body",
                       "value": "${{ github.event.pull_request.body }}"
                     }
                   ]
