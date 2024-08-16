@@ -15,22 +15,22 @@ jobs:
           DISCORD_WEBHOOK: https://discord.com/api/webhooks/1273908091984937012/vQ1q2Z-xZNYiagAfGt3eveVodAGCe0lVAQoRsGt-JjG_Rr2TVNcQ7mRQqWERgyxT8sXD
           DISCORD_USERNAME: Bang_BOT
           DISCORD_AVATAR: https://github.com/pknu-wap/WAPP/blob/main/image/icon.png?raw=true
-          DISCORD_EMBEDS: |  # 7
+          DISCORD_EMBEDS: | 
             [
                 { 
                   "title": "똑똑~ 방 리모델링 요청이 왔어요!\n${{ github.event.pull_request.title }}",
-                  "color": 10478271,
+                  "color": 16777123
                   "description": "${{ github.event.pull_request.html_url }}",
                   "fields": [
                     {
                       "name": "Pull Request Number",
                       "value": "#${{ github.event.pull_request.number }}",
-                      "inline": true
+                      #"inline": true
                     },
                     {
                       "name": "Author",
                       "value": "${{ github.event.pull_request.user.login }}",
-                      "inline": true
+                      #"inline": true
                     }
                   ]
                 }
