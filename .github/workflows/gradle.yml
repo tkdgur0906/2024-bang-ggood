@@ -24,11 +24,11 @@ jobs:
                   "fields": [
                     {
                       "name": "Pull Request Number",
-                      "value": "#${{ github.event.pull_request.number }}",
+                      "value": "#${{ github.event.pull_request.number }}"
                     },
                     {
                       "name": "Author",
-                      "value": "${{ github.event.pull_request.user.login }}",
+                      "value": "${{ github.event.pull_request.user.login }}"
                     }
                   ]
                 }
