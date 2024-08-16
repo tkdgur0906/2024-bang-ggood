@@ -31,6 +31,10 @@ jobs:
                       "name": "Author",
                       "value": "${{ github.event.pull_request.user.login }}",
                       "inline": true
+                    },
+                    {
+                      "name": "Body",
+                      "value": "${{ github.event.pull_request.body }}"
                     }
                   ]
                 }
