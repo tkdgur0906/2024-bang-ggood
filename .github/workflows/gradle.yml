@@ -34,7 +34,12 @@ jobs:
                   },
                   {
                     "name": "reviewers",
-                    "value": "${{ github.event.pull_request.requested_reviewers }}",
+                    "value": "${{ github.event.pull_request.requested_reviewers[*].login }}",
+                    "inline": false
+                  },
+                  {
+                    "name": "assignees",
+                    "value": "${{ github.event.pull_request.assignees[*].login }}",
                     "inline": false
                   }
                 ]
