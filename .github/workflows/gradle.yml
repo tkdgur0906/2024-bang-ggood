@@ -19,7 +19,7 @@ jobs:
             [
                 { 
                   "title": "똑똑~ 방 리모델링 요청이 왔어요!\n${{ github.event.pull_request.title }}",
-                  "color": 16777123
+                  "color": 16777123,
                   "description": "${{ github.event.pull_request.html_url }}",
                   "fields": [
                     {
