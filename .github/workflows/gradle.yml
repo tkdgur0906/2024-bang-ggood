@@ -1,0 +1,37 @@
+name: Discord Pr
+
+on:
+  pull_request:
+    branches: ["dev"]
+
+jobs: 
+  create-issue:
+    name: Discord notification 
+    runs-on: ubuntu-latest 
+    steps:
+      - name: Send PR
+        uses: Ilshidur/action-discord@0.3.2
+        env:
+          DISCORD_WEBHOOK: https://discord.com/api/webhooks/1273908091984937012/vQ1q2Z-xZNYiagAfGt3eveVodAGCe0lVAQoRsGt-JjG_Rr2TVNcQ7mRQqWERgyxT8sXD
+          DISCORD_USERNAME: Bang_BOT
+          DISCORD_AVATAR: https://github.com/pknu-wap/WAPP/blob/main/image/icon.png?raw=true
+          DISCORD_EMBEDS: |  # 7
+            [
+                { 
+                  "title": "왔어요 왔어~ 새로운 이슈가 왔어요~🥳\n${{ github.event.issue.title }}",
+                  "color": 10478271,
+                  "description": "${{ github.event.issue.html_url }}",
+                  "fields": [
+                    {
+                      "name": "Issue Number",
+                      "value": "#${{ github.event.issue.number }}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Author",
+                      "value": "${{ github.event.issue.user.login }}",
+                      "inline": true
+                    }
+                  ]
+                }
+              ]
