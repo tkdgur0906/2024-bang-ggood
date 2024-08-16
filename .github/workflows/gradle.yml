@@ -34,7 +34,8 @@ jobs:
                     },
                     {
                       "name": "Body",
-                      "value": "${{ github.event.pull_request.body }}"
+                      "value": "${{ github.event.pull_request.body }}",
+                      "inline": false
                     }
                   ]
                 }
