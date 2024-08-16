@@ -12,9 +12,9 @@ jobs:
       - name: Send PR
         uses: Ilshidur/action-discord@0.3.2
         env:
-          DISCORD_WEBHOOK: https://discord.com/api/webhooks/1273908091984937012/vQ1q2Z-xZNYiagAfGt3eveVodAGCe0lVAQoRsGt-JjG_Rr2TVNcQ7mRQqWERgyxT8sXD
+          DISCORD_WEBHOOK: 
           DISCORD_USERNAME: Bang_BOT
-          DISCORD_AVATAR: https://github.com/pknu-wap/WAPP/blob/main/image/icon.png?raw=true
+          DISCORD_AVATAR: 
           DISCORD_EMBEDS: >
             [
               { 
@@ -33,13 +33,13 @@ jobs:
                     "inline": true
                   },
                   {
-                    "name": "reviewers",
-                    "value": "${{ github.event.pull_request.requested_reviewers[*].login }}",
+                    "name": "Reviewers",
+                    "value": "${{ join(github.event.pull_request.requested_reviewers.*.login, ', ') }}",
                     "inline": false
                   },
                   {
-                    "name": "assignees",
-                    "value": "${{ github.event.pull_request.assignees[*].login }}",
+                    "name": "Assignees",
+                    "value": "${{ join(github.event.pull_request.assignees.*.login, ', ') }}",
                     "inline": false
                   }
                 ]
